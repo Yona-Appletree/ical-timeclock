@@ -4,9 +4,8 @@ Automates the process of creating Timeclock entries from iCal events.
 
 ## Installing
 
-# Set your system time to 24-hour time. "Language and Region" -> "24-Hour Time"
-
-# Drag this bookmarklet to your browser: <a href="javascript:$.getScript('https://raw.githubusercontent.com/Yona-Appletree/ical-timeclock/master/ical-timeclock.js')">iCal Timeclock</a>
+1. Set your system time to 24-hour time. "Language and Region" -> "24-Hour Time"
+2. Drag this bookmarklet to your browser: <a href="javascript:$.getScript('https://raw.githubusercontent.com/Yona-Appletree/ical-timeclock/master/ical-timeclock.js')">iCal Timeclock</a>
 
 ## Usage
 
