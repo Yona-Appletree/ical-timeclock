@@ -23,7 +23,7 @@ function showDialog() {
 	const cancelButton = document.createElement("button");
 	cancelButton.innerText = "Cancel";
 	textarea.style.display = "block";
-	submitButton.style.display = "inline-block";
+	cancelButton.style.display = "inline-block";
 	cancelButton.type="button";
 	form.appendChild(cancelButton);
 	cancelButton.onclick = () => {
