@@ -17,6 +17,3 @@ The format for the names of the events is `TICKET: Some Description #project/act
 For example `BGR-2576: Work on deployment and documentation #internal: badgr`
 
 `PROJECT` and `ACTIVITY` must be substrings of the labels in the project and activity dropdowns.
-
-
-[1]:javascript:alert('Hello World')
