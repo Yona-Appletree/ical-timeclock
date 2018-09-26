@@ -12,19 +12,18 @@ function showDialog() {
 	const textarea = document.createElement("textarea");
 	textarea.style.width = "100%";
 	textarea.style.height = "25em";
+	textarea.style.display = "block";
 	form.appendChild(textarea);
 
 	const submitButton = document.createElement("button");
 	submitButton.innerText = "Submit";
-	textarea.style.display = "block";
-	submitButton.style.display = "block";
+	submitButton.style.display = "inline-block";
 	form.appendChild(submitButton);
-
 
 	const cancelButton = document.createElement("button");
 	cancelButton.innerText = "Cancel";
 	textarea.style.display = "block";
-	cancelButton.style.display = "block";
+	submitButton.style.display = "inline-block";
 	cancelButton.type="button";
 	form.appendChild(cancelButton);
 	cancelButton.onclick = () => {
