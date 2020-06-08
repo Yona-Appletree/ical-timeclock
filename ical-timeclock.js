@@ -111,7 +111,18 @@ function submitTimeEntry(input, dryrun) {
 		return "Project tag #" + projectActivityMatch[1] + " did not match any projects";
 	}
 
-	const [dateStr, startStr, endStr] = timeString.split(/\s*at\s*|\s*to\s*/g);
+	const [dateStr, startStrRaw, endStrRaw] = timeString.split(/\s*at\s*|\s*to\s*/g);
+
+	const startStr = normalizeTimeString(startStrRaw);
+	const endStr = normalizeTimeString(endStrRaw);
+
+	if (! startStr) {
+		return `Start Time String '${startStrRaw}' does not conform to 'HH:MM' or 'hh:mm aa'`;
+	}
+
+	if (! endStr) {
+		return `End Time String '${endStrRaw}' does not conform to 'HH:MM' or 'hh:mm aa'`;
+	}
 
 	// Add ticket number
 	$("#ticket").val(ticketMatch ? ticketMatch[1] : "");
@@ -141,6 +152,7 @@ function submitTimeEntry(input, dryrun) {
 		}
 	}
 
+
 	$("#note").val(description);
 	$("#id_date").val(dateStr);
 	$("#startTime").val(startStr);
@@ -161,5 +173,34 @@ function submitTimeEntry(input, dryrun) {
 			}
 			iframe.onerror = () => reject(input);
 		});
+	}
+}
+
+/**
+ * Normalizes time strings that might be in 12-hour format to conform to the HTML input standard of a 24-hour string.
+ */
+function normalizeTimeString(input) {
+	input = input.trim();
+
+	const match12 = input.match(/(\d?\d):(\d?\d)(?::\d?\d)? (AM|PM)/i);
+
+	if (match12) {
+		const hours = parseInt(match12[1]);
+		const minutes = parseInt(match12[2]);
+		const ampm = match12[3];
+
+		function pad(n) {
+			return n < 10 ? `0${n}` : `${n}`
+		}
+
+		if (ampm.toLowerCase() === "pm" && hours !== 12) {
+			return `${pad(hours + 12)}:${pad(minutes)}`;
+		} else {
+			return `${pad(hours)}:${pad(minutes)}`;
+		}
+	} else if (input.match(/(\d?\d):(\d?\d)(?::\d?\d)?/)) {
+		return input;
+	} else {
+		return null;
 	}
 }
