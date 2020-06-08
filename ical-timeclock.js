@@ -62,14 +62,22 @@ function fillFromCalendarInput(input) {
 	if (errors.length) {
 		alert("Errors found: \n" + errors.map(r => r.entry + "\n!! " + r.error + " !!").join("\n\n"));
 	} else {
-		// We used to fire off all requests simultaneously, but a change to timeclock caused that break, submitting
-		// only the first entry. Probably some sort of onsubmit handler delaying things. In any case, there are
-		// probably quicker ways of handling it, but this is more sure-fire.
+		const allPromises = [];
+
 		(async () => {
 			for (let result of results) {
-				await submitTimeEntry(result.entry, false);
+				allPromises.push(submitTimeEntry(result.entry, false));
+
+				// Hack: Something changed around may 15th, 2020 that broke this script. Only the first entry would
+				// be submitted in Chrome. My first thought was that it was a change to timeclock, but Nate reports that
+				// Firefox works correctly. It's possible something changed in Chrome such that submitting a form
+				// multiple time to multiple iframes in the same frame doesn't work anymore. In any case, this hack
+				// fixes the issue.
+				await new Promise(r => setTimeout(r, 100));
 			}
-		})().then(
+		})()
+
+		Promise.all(allPromises).then(
 			() => {
 				window.location.reload();
 			},
@@ -147,12 +155,11 @@ function submitTimeEntry(input, dryrun) {
 		$("#endTime")[0].form.submit();
 
 		return new Promise((resolve, reject) => {
-			iframe.onload = () => resolve(input);
+			iframe.onload = () => {
+				console.info("Frame loaded for " + input);
+				resolve(input);
+			}
 			iframe.onerror = () => reject(input);
 		});
 	}
-}
-
-function timeoutPromise(timeout) {
-	return new Promise(resolve => setTimeout(resolve, timeout));
 }
