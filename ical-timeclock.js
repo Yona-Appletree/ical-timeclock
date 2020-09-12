@@ -79,7 +79,7 @@ function fillFromCalendarInput(input) {
 
 		Promise.all(allPromises).then(
 			() => {
-				window.location.reload();
+				//window.location.reload();
 			},
 			errors => alert("Some entries failed to submit:\n" + errors.join("\n\n"))
 		);
