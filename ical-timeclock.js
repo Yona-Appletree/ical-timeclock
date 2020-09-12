@@ -111,7 +111,9 @@ function submitTimeEntry(input, dryrun) {
 		return "Project tag #" + projectActivityMatch[1] + " did not match any projects";
 	}
 
-	const [dateStr, startStrRaw, endStrRaw] = timeString.split(/\s*at\s*|\s*to\s*/g);
+	const [dateStrRaw, startStrRaw, endStrRaw] = timeString.split(/\s*at\s*|\s*to\s*/g);
+	
+	const dateStr = normalizeDateString(dateStrRaw);
 
 	const startStr = normalizeTimeString(startStrRaw);
 	const endStr = normalizeTimeString(endStrRaw);
@@ -203,4 +205,8 @@ function normalizeTimeString(input) {
 	} else {
 		return null;
 	}
+}
+
+function normalizeDateString(dateStr) {
+	return (new Date(dateStr)).toISOString().substr(0,10);
 }
