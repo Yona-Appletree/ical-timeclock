@@ -111,7 +111,9 @@ function submitTimeEntry(input, dryrun) {
 		return "Project tag #" + projectActivityMatch[1] + " did not match any projects";
 	}
 
-	const [dateStrRaw, startStrRaw, endStrRaw] = timeString.split(/\s*at\s*|\s*to\s*/g);
+	const [dateStrRaw, startStrRaw, endStrRaw] = timeString
+		.replace(/,\s+\w+$/i, "") // Remove the ", ZNE" suffix, if present.
+		.split(/\s*at\s*|\s*to\s*/g);
 	
 	const dateStr = normalizeDateString(dateStrRaw);
 
